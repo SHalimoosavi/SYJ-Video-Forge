@@ -1,37 +1,54 @@
 # SYJ Video Forge
 
-Open video-workflow foundation by SAYANJALI NEXUS PRIVATE LIMITED. The project includes a standard-library Python local backend and an FFmpeg test-pattern provider for validating the job, media, cancellation, and playback pipeline.
+A static browser interface, a standard-library local backend, and a file-bundle GPU worker for open video models. The worker runs on a GPU environment controlled by the user; the static site creates a `job.json` bundle and imports `result.mp4` plus `manifest.json` after manual transfer. No tunnel or inbound worker service is implemented.
 
-## Status — v0.2.0 pre-release
+## Status — v0.3.0 PRE-RELEASE
 
-**A real AI video engine is not included.** The shipped `test-pattern` provider creates synthetic FFmpeg test-pattern clips; it does not interpret prompts or generate AI content. Its output and history entries are labeled `TEST PATTERN: not AI generated`. The `Mock` provider only simulates interface progress and never creates a video. No model weights, model downloads, paid providers, cloud storage, analytics, ads, trackers, CDN assets, remote fonts, or mandatory paid services are included.
+**The real inference path is implemented but UNVERIFIED ON REAL HARDWARE.** No Kaggle/Colab GPU session or local NVIDIA GPU is available to this build process. Do not infer that the selected model works on a T4/P100 until a verification report exists. The `Mock` provider remains **SIMULATED**. The backend `test-pattern` and worker `FakeEngine` are synthetic and are never described as AI generation. The FakeEngine is test-only and cannot be selected in the UI or normal CLI.
 
-## Run locally
+Zero-cost is the default: no paid APIs, model weights, cloud-storage integration, analytics, telemetry, CDN scripts, remote fonts, or secrets are included. The worker downloads selected model weights at runtime, so internet access and disk space are required on the worker. GPU availability and platform session limits are not guaranteed.
 
-Requirements: Python 3.10–3.14 and FFmpeg on `PATH` for test-pattern MP4 output. No pip dependencies are required.
+## Browser file-bundle workflow
+
+1. Choose **GPU worker (file bundle)** and configure prompt, optional starting image, scene prompts, engine, duration, seed, and continuity.
+2. Select **Create job bundle** to download `job.json`.
+3. Run the worker on a GPU you control (Kaggle notebook, Colab where permitted, or a local NVIDIA GPU machine). The bundle stays local unless you upload it yourself.
+4. Return with `result.mp4` and `manifest.json`, select both, and import. The browser checks the bundle ID, schema, MP4 signature, size, SHA-256, and browser playback.
+5. AI model/GPU metadata is self-reported by the worker and is not independently attested. The UI labels it accordingly. A `test_pattern` result is explicitly labeled **TEST PATTERN: not AI generated**.
+
+The privacy notice is intentional: **This file contains your prompt and image. It leaves your device only if you upload it to a notebook service or machine you choose.**
+
+## Run the local backend
+
+Requirements: Python 3.10–3.14 and FFmpeg on `PATH` for test-pattern MP4 output. The backend itself uses only the Python standard library.
 
 ```sh
 python -m backend.server --serve-frontend
 ```
 
-Open `http://127.0.0.1:8080/`. The backend binds to loopback by default. Stop it with Ctrl+C. To serve only the API, omit `--serve-frontend`. For command options, CORS allowlisting, and FFmpeg setup, see `docs/PLATFORMS.md` and `docs/PROVIDERS.md`.
+Open `http://127.0.0.1:8080/`. The local backend and test-pattern provider remain available and unchanged. The GPU bundle workflow works from the static GitHub Pages site without a backend and also from this local UI. See `docs/ARCHITECTURE.md` and `docs/PROVIDERS.md`.
 
-## GitHub Pages
+## GPU worker
 
-The static UI is published from the generated `site/` directory. In the repository, open **Settings → Pages → Build and deployment → Source** and select **GitHub Actions**. A workflow cannot enable that repository setting by itself. The Pages UI is served over HTTPS; browsers may restrict calls from it to a local HTTP backend. For local generation, run the frontend and backend on the same local origin with `--serve-frontend`.
+The worker package imports without PyTorch. Heavy libraries are loaded lazily only inside real engine adapters.
 
-## Verify
+```sh
+python -m worker engines
+python -m worker smoke-test --engine ltx-video --out worker-output
+python -m worker run job.json --out OUT_DIR --engine ltx-video
+python -m worker run job.json --out OUT_DIR --engine ltx-video --resume
+```
+
+See `worker/notebook/syj_video_forge_gpu.ipynb`, `docs/WORKER-VERIFY.md`, `docs/BUNDLE-FORMAT.md`, `docs/MODELS.md`, and `docs/PLATFORM-POLICIES.md`. **UNVERIFIED ON REAL HARDWARE** until a report is reviewed.
+
+## Verify locally
 
 ```sh
 sh scripts/verify.sh
 ```
 
-PowerShell equivalent: `./scripts/verify.ps1`. The test suite includes an FFmpeg/ffprobe integration test; it is explicitly skipped if either executable is unavailable. `sh scripts/build-site.sh` generates only `site/index.html`, `site/styles.css`, and `site/src/`.
+PowerShell equivalent: `./scripts/verify.ps1`. The verification suite includes the existing Node/Python tests, FFmpeg backend integration, worker unit tests, a fake-engine MP4/ffprobe integration (skipped explicitly when FFmpeg/ffprobe are absent), notebook structure checks, syntax checks, static checks, and site build. The build environment's actual output should be recorded in `QA-REPORT-v0.3.0.md`.
 
-## Long-video pipeline
+## GitHub Pages
 
-The backend builds a storyboard from sequential clips, extracts each intermediate clip's last frame, passes that frame to the next provider call, and concatenates the clips with FFmpeg. The included test-pattern provider deliberately ignores image conditioning and is not an AI model. A future provider may use the start frame if its capability declaration supports it. The pipeline validates mechanics, not semantic continuity or model quality.
-
-## Documentation
-
-See `docs/ARCHITECTURE.md`, `docs/PROVIDERS.md`, `docs/PLATFORMS.md`, `docs/TROUBLESHOOTING.md`, `docs/MODELS.md`, `docs/SECURITY.md`, and `docs/QA-CHECKLIST.md`. Source code is MIT licensed; FFmpeg and any future model weights or external services have their own licenses and terms.
+The static UI is published from generated `site/`. In repository settings, choose **Settings → Pages → Build and deployment → Source → GitHub Actions**. A workflow cannot enable that setting itself. Pages is not an inference server; the worker communicates only through manually transferred files.

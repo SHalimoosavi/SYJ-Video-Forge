@@ -17,3 +17,6 @@ site/
 data/
 *.mp4
 *.png
+
+# Local GPU worker outputs and model cache metadata
+worker-output/

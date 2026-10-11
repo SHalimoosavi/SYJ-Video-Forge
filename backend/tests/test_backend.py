@@ -122,8 +122,12 @@ class BackendUnitTests(unittest.TestCase):
             s=make_server("127.0.0.1",0,d);t=threading.Thread(target=s.serve_forever,daemon=True);t.start()
             try:
                 req=urllib.request.Request(f"http://127.0.0.1:{s.server_address[1]}/api/jobs",data=b"",method="POST",headers={"Content-Type":"application/json","Content-Length":str(MAX_BODY_BYTES+1)})
-                with self.assertRaises(urllib.error.HTTPError) as ctx:urllib.request.urlopen(req,timeout=3)
-                self.assertEqual(ctx.exception.code,413)
+                with self.assertRaises(urllib.error.HTTPError) as ctx:
+                    urllib.request.urlopen(req, timeout=3)
+                try:
+                    self.assertEqual(ctx.exception.code, 413)
+                finally:
+                    ctx.exception.close()
             finally:s.shutdown();s.server_close();s.manager.close();t.join(2)
     def test_range_http_response(self):
         with tempfile.TemporaryDirectory() as d:

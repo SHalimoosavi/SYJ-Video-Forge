@@ -1,15 +1,16 @@
-# Deleted / renamed files for v0.2.0 overlay
+# Deleted and renamed files — v0.3.0 overlay
 
-## Tracked source files deleted or renamed
+No existing project files are deleted or renamed by this v0.3.0 overlay.
 
-- None. v0.2.0 is an overlay on the v0.1.0 repository; existing source paths are retained.
+## New files
 
-## Generated/stale files to remove or regenerate after overlay
+- `src/bundles.js`, `src/bundle-flow.js`
+- `worker/` package, engines, CLI, unit tests, and GPU notebook
+- `requirements-worker.txt`
+- `docs/BUNDLE-FORMAT.md`, `docs/WORKER-VERIFY.md`, `docs/WORKER-LIVE.md`, `docs/PLATFORM-POLICIES.md`, `docs/verification/REPORT-TEMPLATE.md`
+- `RELEASE_NOTES_v0.3.0.md`, `QA-REPORT-v0.3.0.md`
+- `tests/bundles.test.js`, `scripts/test_notebook.py`
 
-- `scripts/__pycache__/` — stale Python bytecode from v0.1.0; safe to remove.
-- `backend/__pycache__/`, `backend/providers/__pycache__/`, `backend/tests/__pycache__/` — generated Python bytecode; safe to remove.
-- `site/` — generated Pages artifact; `scripts/build-site.sh` or `scripts/build-site.ps1` recreates it. It is intentionally not included in the source ZIP.
+## Updated existing files
 
-## Local runtime data
-
-- `data/` is gitignored and contains local job metadata, intermediate clips, frames, and MP4 output. It is intentionally not included in the ZIP. Do not remove it unless you intend to delete locally generated jobs and videos.
+The UI entry point, styles, core state machine, static-site build scripts, verification scripts, static checker, CI workflow, backend 413 test, README, model/platform/security/provider/architecture/troubleshooting docs, changelog, and release notes are updated in place. The local backend and its test-pattern provider are retained.

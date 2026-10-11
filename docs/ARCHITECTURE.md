@@ -20,3 +20,10 @@ The default storyboard is six 5-second scenes for 30 seconds. Short durations an
 The server binds to `127.0.0.1:8080` by default. Non-loopback binding requires an explicit `--host` flag and prints a warning, but does not add authentication. Request bodies, image sizes, prompt length, scene count, active job count, and job retention are bounded. Job IDs are random UUID hex strings; paths are derived only from validated IDs and fixed filenames under the configured data directory. Subprocesses use argument arrays and do not invoke a shell. Cancellation sets a thread event and terminates a running FFmpeg process.
 
 The default CORS allowlist is intentionally explicit. Browser private-network behavior differs by browser and origin; use `--serve-frontend` to serve the UI and API on one local origin where possible.
+
+
+## v0.3.0 file-bundle worker
+
+The browser can create a schema-v1 `job.json` and download it without calling a backend. A separately run GPU worker validates that bundle, loads a selected model lazily, generates scenes, writes `scenes/` files and an incremental `manifest.json`, then stitches `result.mp4`. Users transfer the two result files manually and import them in the browser. No inbound network path or tunnel exists. The same UI still supports the local standard-library backend and its test-pattern provider.
+
+The worker's orchestration/schema/test-pattern path uses only the Python standard library (FFmpeg is an external executable for media operations); torch, Diffusers, Transformers, Accelerate, Pillow and NumPy are imported only inside engine/media code paths. The browser verifies bundle ID, schema, MP4 signature, file size, SHA-256 and browser playback. Manifest hardware/model fields remain self-reported. AI inference is **UNVERIFIED ON REAL HARDWARE** until a report is reviewed.

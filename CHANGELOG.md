@@ -1,17 +1,22 @@
 # Changelog
 
+## v0.3.0 — PRE-RELEASE
+
+- Added the first real AI inference path through manually transferred, versioned job/result bundles and user-controlled GPU workers.
+- Added lazy LTX-Video and Wan 2.2 TI2V-5B adapters, scene planning, incremental manifests, resume, continuity, FFmpeg stitching, and degenerate-output checks.
+- Added browser import verification, worker notebook, platform policy notes, model license research, and a GPU verification report template.
+- Added worker tests that run without importing PyTorch and a test-only FFmpeg FakeEngine.
+- Fixed the HTTP 413 test's unclosed `HTTPError` response warning.
+- **UNVERIFIED ON REAL HARDWARE** until a user-run report is reviewed. Live transport is not implemented.
+
 ## v0.2.0 — PRE-RELEASE
 
 - Added a standard-library Python local API and bounded thread-based job manager.
-- Added an FFmpeg test-pattern pipeline, last-frame extraction, concat stream-copy/re-encode fallback, MP4 byte-range responses, and explicit non-AI labeling.
+- Added an FFmpeg test-pattern pipeline, last-frame extraction, concat fallback, MP4 byte-range responses, and explicit non-AI labeling.
 - Added request validation, image signature checks, CORS allowlisting, job TTL cleanup, cancellation events, and local metadata persistence.
-- Fixed provider destination disclosure formatting and asynchronous cancellation guards; expanded provider and backend tests.
-- GitHub Pages now publishes the generated `site/` folder only. Repository Pages source must be set to GitHub Actions manually.
-- **No real AI model, model weights, paid provider, cloud storage, or analytics are included.**
+- GitHub Pages publishes the generated `site/` folder only. Repository Pages source must be set to GitHub Actions manually.
 
 ## v0.1.0 — FOUNDATION PRE-RELEASE
-
-The v0.1.0 release was published as a normal release instead of being marked as a pre-release. The repository owner is correcting that release metadata manually; this changelog records the intended pre-release status without rewriting Git history.
 
 - Static UI and provider interface foundation.
 - Mock mode simulates interface progress only; it does not create video.

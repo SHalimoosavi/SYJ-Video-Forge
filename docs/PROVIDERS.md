@@ -67,3 +67,10 @@ Returns `video/mp4` only after completion. Supports one `Range: bytes=start-end`
 ## CORS
 
 Default allowed origins are `http://127.0.0.1:8080`, `http://localhost:8080`, and `https://shalimoosavi.github.io`. Configure with `--cors-origins https://example.test,http://127.0.0.1:8080`. Wildcard origins are rejected. Preflight supports `Content-Type`, `Range`, and the `Access-Control-Request-Private-Network` header. CORS is not authentication. Prefer `--serve-frontend` to avoid cross-origin calls on local use.
+
+
+## GPU worker (file bundle) — v0.3.0
+
+This provider is independent of the local API. The static Pages site creates `job.json`; the worker runs on a GPU machine or notebook the user controls; the user manually imports `result.mp4` and `manifest.json`. The UI validates schema, bundle identity, MP4 signature, size and SHA-256, then checks that the browser can parse the video. It never sends the bundle to a remote endpoint automatically. The privacy disclosure is: “This file contains your prompt and image. It leaves your device only if you upload it to a notebook service or machine you choose.”
+
+The real adapters are LTX-Video (primary) and Wan 2.2 TI2V-5B (fallback). They download weights at runtime. Their official licenses, constraints and current source links are recorded in `docs/MODELS.md`. The worker's FakeEngine exists only in tests and is not a UI option or a normal CLI engine. The existing local backend and test-pattern flow are unchanged. **UNVERIFIED ON REAL HARDWARE** until a user submits a verification report. Live worker HTTP/tunnel transport is not implemented; see `docs/WORKER-LIVE.md`.

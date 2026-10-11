@@ -20,3 +20,14 @@ Run the backend and frontend together with `python -m backend.server --serve-fro
 ## Not covered by automated tests
 
 Real browser rendering, accessibility audit, PowerShell script execution, Windows FFmpeg installation/codec availability, macOS and Android runtime behavior, actual GitHub Pages deployment for this commit, and real AI generation (no AI provider is included).
+
+
+## v0.3.0 file-bundle worker
+
+- [ ] Verify bundle schema and image magic/SHA before execution.
+- [ ] Confirm the worker package imports without torch and FakeEngine is unavailable to normal CLI/UI users.
+- [ ] Run fake-engine end-to-end with ffmpeg/ffprobe; explicitly record a skip if either is absent.
+- [ ] Check per-scene manifest updates, scene seeds, resume hash matching, frame luminance/NaN guards, and final MP4 metadata.
+- [ ] Import valid and invalid manifests in Node tests (wrong SHA, job ID, schema, size, and kind).
+- [ ] Run `docs/WORKER-VERIFY.md` on real GPU hardware and submit a report before removing the UNVERIFIED label.
+- [ ] Review current Kaggle/Colab policies and the exact model licenses before uploading any bundle.

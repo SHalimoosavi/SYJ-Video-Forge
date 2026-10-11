@@ -23,6 +23,10 @@ Use the official FFmpeg download page to select a distribution appropriate to yo
 
 Official reference: https://ffmpeg.org/download.html. Package availability and codec support vary; the integration test requires H.264 encoding and `ffprobe`.
 
+## GPU worker environment (v0.3.0)
+
+Real model inference runs on a GPU worker chosen and controlled by the user. The browser bundle workflow also works from the static Pages site and does not need the local backend. Install the pinned worker dependencies with `python -m pip install -r requirements-worker.txt` in a compatible GPU environment; the file intentionally omits PyTorch so a CUDA-compatible build already present in the notebook image can be reused. Run `python -m worker engines` to inspect dependency availability, then follow `docs/WORKER-VERIFY.md`. Real model inference is **UNVERIFIED ON REAL HARDWARE** until a report is reviewed. GPU availability, free quotas, session duration, model downloads and memory fit are not guaranteed.
+
 ## Local origin versus Pages
 
 GitHub Pages serves HTTPS, while the default backend uses HTTP on loopback. Browsers may block or restrict cross-origin/private-network requests. For local use, serve the frontend and API together with `--serve-frontend`. If using Pages, add its exact origin to the backend allowlist and understand that browser private-network restrictions may still prevent the request. Do not expose the unauthenticated backend to an untrusted network.
