@@ -1,0 +1,2 @@
+# Contributing
+Keep default behavior free, static, and free of hidden network activity. Run `sh scripts/verify.sh` and include exact output. Do not commit secrets, add telemetry, CDN scripts, remote fonts, cloud storage, or make simulated output look real. Document all provider network behavior. Linux, macOS, Windows, and Android are equal targets for applicable instructions. Model weights and providers have independent terms.

@@ -1,0 +1,2 @@
+# Security
+Report sensitive vulnerabilities privately through GitHub's private reporting where available. Never commit credentials, keys, or private URLs. Endpoint settings and metadata history are stored in browser local storage. Custom endpoints receive prompt text and, in image mode, the uploaded image after submission. Any future backend must validate inputs, restrict CORS origins, authenticate network exposure, enforce upload limits, and protect output paths. Phase 1 has no backend.
