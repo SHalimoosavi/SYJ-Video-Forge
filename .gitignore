@@ -11,3 +11,9 @@ node_modules/
 Thumbs.db
 coverage/
 dist/
+
+# Generated site and local backend data
+site/
+data/
+*.mp4
+*.png

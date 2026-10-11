@@ -16,9 +16,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
+      - name: Build static site
+        run: sh scripts/build-site.sh
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: site/
   deploy:
     environment:
       name: github-pages
